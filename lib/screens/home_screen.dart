@@ -10,7 +10,7 @@ class HomeScreen extends StatelessWidget {
         AppBarCustom(
           title: "Home",
           icon: OMIcons.accountCircle,
-        )
+        ),
       ],
     );
   }

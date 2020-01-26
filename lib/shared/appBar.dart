@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 class AppBarCustom extends StatelessWidget {
   final String title;
   final IconData icon;
-  final String iconString;
+  final bool iconString;
 
-  AppBarCustom({@required this.title, @required this.icon,  this.iconString});
+  AppBarCustom({@required this.title, this.icon, this.iconString = false});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -24,21 +24,16 @@ class AppBarCustom extends StatelessWidget {
                   color: Theme.of(context).primaryColor),
             ),
           ),
-          iconString  == null ? 
-          IconButton(
+          FlatButton.icon(
+            shape: RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(18.0),
+                side: BorderSide(color: Theme.of(context).scaffoldBackgroundColor)),
             icon: Icon(
               icon,
               color: Theme.of(context).primaryColor,
             ),
-            onPressed: () {}, 
-            
-          ) : FlatButton.icon(
-            icon: Icon(
-              icon,
-              color: Theme.of(context).primaryColor,
-            ),
-            onPressed: () {}, 
-            label: Text(iconString),
+            onPressed: () {},
+            label: Text(iconString ? "0.0 mBtc" : " ", style: TextStyle(color: Colors.red),),
           )
         ],
       ),
