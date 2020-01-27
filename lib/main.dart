@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:nymwal/screens/history_screen.dart';
 import 'package:nymwal/screens/home_screen.dart';
 import 'package:nymwal/screens/receive_screen.dart';
@@ -10,6 +11,10 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
+    
     return MaterialApp(
       theme: ThemeData(
           scaffoldBackgroundColor: Color.fromRGBO(255, 248, 232, 1),
@@ -20,7 +25,6 @@ class MyApp extends StatelessWidget {
               side: BorderSide(color: Colors.red),
             ),
           )),
-      title: '',
       home: MyHomePage(),
     );
   }

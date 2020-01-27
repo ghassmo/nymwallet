@@ -20,85 +20,104 @@ class SendScreen extends StatelessWidget {
   final _form = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Stack(
+      alignment: Alignment.topCenter,
       children: <Widget>[
-        AppBarCustom(
-          title: "Send",
-          icon: OMIcons.accountBalanceWallet,
-          iconString: true,
-        ),
-        Container(
-          width: double.infinity,
-          padding: EdgeInsets.all(15),
-          child: Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(50.0),
-              ),
-              child: Padding(
-                padding: EdgeInsets.all(30),
-                child: Column(
-                  children: <Widget>[
-                    TextFormField(
-                      decoration: buildInputDec(
-                          "Pay to", OMIcons.centerFocusStrong, () {}),
-                    ),
-                    TextFormField(
-                      decoration:
-                          buildInputDec("Amount", OMIcons.arrowRight, () {}),
-                    ),
-                    Padding(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            "Fee: ",
-                            style: TextStyle(
-                                color: Colors.red, fontWeight: FontWeight.bold),
-                          ),
-                          Slider(
-                            value: 0.2,
-                            min: 0.0,
-                            max: 100.0,
-                            divisions: 2,
-                            onChanged: (double value) {},
-                          ),
-                          Text(
-                            "0.0",
-                            style: TextStyle(
-                                color: Colors.red, fontWeight: FontWeight.bold),
-                          )
-                        ],
-                      ),
-                      padding: EdgeInsets.only(top: 20),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 20),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget>[
-                          FlatButton(
-                            onPressed: () {},
-                            child: const Text(
-                              "Send",
-                              style: TextStyle(color: Colors.red),
-                            ),
-                          ),
-                          FlatButton(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(18.0),
-                                side: BorderSide(color: Colors.white)),
-                            onPressed: () {},
-                            child: const Text(
-                              "Clear",
-                              style: TextStyle(color: Colors.red),
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
+        Align(
+            alignment: Alignment.topCenter,
+            child: AppBarCustom(
+              title: "Send",
+              icon: OMIcons.accountBalanceWallet,
+              iconString: true,
+            )),
+        Positioned(
+          top: 125,
+          child: Container(
+            height: 360,
+            padding: EdgeInsets.all(15),
+            child: Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50.0),
                 ),
-              )),
+                child: Padding(
+                  padding: EdgeInsets.all(30),
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        width: 300,
+                        child: TextFormField(
+                          decoration: buildInputDec(
+                              "Pay to", OMIcons.centerFocusStrong, () {}),
+                        ),
+                      ),
+                      Container(
+                        width: 300,
+                        child: TextFormField(
+                          decoration: buildInputDec(
+                              "Amount", OMIcons.arrowRight, () {}),
+                        ),
+                      ),
+                      Padding(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              "Fee: ",
+                              style: TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Slider(
+                              value: 0.2,
+                              min: 0.0,
+                              max: 100.0,
+                              divisions: 2,
+                              onChanged: (double value) {},
+                            ),
+                            Text(
+                              "0.0 Satoshi",
+                              style: TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            IconButton(
+                              icon: Icon(OMIcons.autorenew),
+                              color: Colors.red,
+                              onPressed: () {},
+                            )
+                          ],
+                        ),
+                        padding: EdgeInsets.only(top: 20),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            FlatButton(
+                              onPressed: () {},
+                              child: const Text(
+                                "Send",
+                                style: TextStyle(color: Colors.red),
+                              ),
+                            ),
+                            FlatButton(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(18.0),
+                                  side: BorderSide(color: Colors.white)),
+                              onPressed: () {},
+                              child: const Text(
+                                "Clear",
+                                style: TextStyle(color: Colors.red),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                )),
+          ),
         )
       ],
     );
