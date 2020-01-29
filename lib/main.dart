@@ -1,78 +1,63 @@
+
+
+import 'package:bitcoin_flutter/src/payments/p2pkh.dart' show P2PKH;
+import 'package:bitcoin_flutter/src/payments/index.dart' show PaymentData;
+import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:nymwal/screens/history_screen.dart';
-import 'package:nymwal/screens/home_screen.dart';
-import 'package:nymwal/screens/receive_screen.dart';
-import 'package:nymwal/screens/send_screen.dart';
-import 'package:outline_material_icons/outline_material_icons.dart';
+import 'package:provider/provider.dart';
+import 'package:web_socket_channel/io.dart';
+
+import './providers/trans_provider.dart';
+import './screens/tab_screen.dart';
+import './data_stream.dart';
+
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+  bool isStreamOn = false;
+  final dataStream dataSt =
+      new dataStream(IOWebSocketChannel.connect('ws://85.90.245.20:8765'));
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
-    
-    return MaterialApp(
-      theme: ThemeData(
-          scaffoldBackgroundColor: Color.fromRGBO(255, 248, 232, 1),
-          primarySwatch: Colors.red,
-          buttonTheme: ButtonThemeData(
-            shape: RoundedRectangleBorder(
-              borderRadius: new BorderRadius.circular(18.0),
-              side: BorderSide(color: Colors.red),
-            ),
-          )),
-      home: MyHomePage(),
+
+    if (!isStreamOn) {
+      this.dataSt.initData();
+      isStreamOn = true;
+    }
+
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(
+          value: Trans(dataSt),
+        )
+      ],
+      child: MaterialApp(
+        theme: ThemeData(
+            scaffoldBackgroundColor: Color.fromRGBO(255, 248, 232, 1),
+            primarySwatch: Colors.red,
+            buttonTheme: ButtonThemeData(
+              shape: RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(18.0),
+                side: BorderSide(color: Colors.red),
+              ),
+            )),
+        home: TabScreen(),
+      ),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  @override
-  _MyAppState createState() => _MyAppState();
-}
 
-class _MyAppState extends State<MyHomePage> {
-  int _selectedItem = 0;
-
-  final List<Widget> _childerWidgets = [
-    HomeScreen(),
-    SendScreen(),
-    ReceiveScreen(),
-    HistoryScreen(),
-  ];
-
-  void _selectItem(int i) {
-    setState(() {
-      _selectedItem = i;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        body: Center(child: _childerWidgets[_selectedItem]),
-        bottomNavigationBar: BottomNavigationBar(
-          selectedItemColor: Theme.of(context).primaryColor,
-          unselectedItemColor: Theme.of(context).primaryColor.withOpacity(0.5),
-          onTap: _selectItem,
-          currentIndex: _selectedItem,
-          showUnselectedLabels: true,
-          items: <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              title: Text("Home"),
-              icon: Icon(OMIcons.home),
-            ),
-            BottomNavigationBarItem(
-                title: Text("Send"), icon: Icon(OMIcons.send)),
-            BottomNavigationBarItem(
-                title: Text("Receive"), icon: Icon(OMIcons.arrowDownward)),
-            BottomNavigationBarItem(
-                title: Text("History"), icon: Icon(OMIcons.history)),
-          ],
-        ));
-  }
-}
+//   final keyPair =
+//       ECPair.fromWIF('cVks5KCc8BBVhWnTJSLjr5odLbNrWK9UY4KprciJJ9dqiDBenhzr');
+//   final testnet = NETWORKS.testnet;
+//   final address = new P2PKH(
+//           data: new PaymentData(pubkey: keyPair.publicKey), network: testnet)
+//       .data
+//       .address;

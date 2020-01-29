@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:nymwal/shared/appBar.dart';
+import 'package:provider/provider.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
+
+import '../providers/trans_provider.dart';
+import '../shared/appBar.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var trans = Provider.of<Trans>(context);
     return Stack(
       alignment: Alignment.topCenter,
       children: <Widget>[
@@ -15,7 +19,7 @@ class HomeScreen extends StatelessWidget {
         Positioned(
           top: 200,
           child: Text(
-            "0.0mBtc",
+            trans.balance.toString() + " mBtc",
             style: TextStyle(
                 fontSize: 30,
                 color: Theme.of(context).scaffoldBackgroundColor,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nymwal/shared/appBar.dart';
+import '../shared/appBar.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 
 InputDecoration buildInputDec(String title, IconData icon, Function onPress) {
@@ -17,7 +17,7 @@ InputDecoration buildInputDec(String title, IconData icon, Function onPress) {
 }
 
 class SendScreen extends StatelessWidget {
-  final _form = GlobalKey<FormState>();
+  // final _form = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -33,7 +33,7 @@ class SendScreen extends StatelessWidget {
         Positioned(
           top: 125,
           child: Container(
-            height: 360,
+            height: 370,
             padding: EdgeInsets.all(15),
             child: Card(
                 shape: RoundedRectangleBorder(
@@ -58,32 +58,36 @@ class SendScreen extends StatelessWidget {
                         ),
                       ),
                       Padding(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
                           children: <Widget>[
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  "Fee: ",
+                                  style: TextStyle(
+                                      color: Theme.of(context).primaryColor,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Slider(
+                                  value: 0.2,
+                                  min: 0.0,
+                                  max: 100.0,
+                                  divisions: 2,
+                                  onChanged: (double value) {},
+                                ),
+                                IconButton(
+                                  icon: Icon(OMIcons.autorenew),
+                                  color: Theme.of(context).primaryColor,
+                                  onPressed: () {},
+                                )
+                              ],
+                            ),
                             Text(
-                              "Fee: ",
+                              "0.0 Satochi",
                               style: TextStyle(
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            Slider(
-                              value: 0.2,
-                              min: 0.0,
-                              max: 100.0,
-                              divisions: 2,
-                              onChanged: (double value) {},
-                            ),
-                            Text(
-                              "0.0 Satoshi",
-                              style: TextStyle(
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            IconButton(
-                              icon: Icon(OMIcons.autorenew),
-                              color: Colors.red,
-                              onPressed: () {},
+                                  color: Theme.of(context).primaryColor),
                             )
                           ],
                         ),
@@ -96,9 +100,10 @@ class SendScreen extends StatelessWidget {
                           children: <Widget>[
                             FlatButton(
                               onPressed: () {},
-                              child: const Text(
+                              child: Text(
                                 "Send",
-                                style: TextStyle(color: Colors.red),
+                                style: TextStyle(
+                                    color: Theme.of(context).primaryColor),
                               ),
                             ),
                             FlatButton(
@@ -106,9 +111,10 @@ class SendScreen extends StatelessWidget {
                                   borderRadius: new BorderRadius.circular(18.0),
                                   side: BorderSide(color: Colors.white)),
                               onPressed: () {},
-                              child: const Text(
+                              child: Text(
                                 "Clear",
-                                style: TextStyle(color: Colors.red),
+                                style: TextStyle(
+                                    color: Theme.of(context).primaryColor),
                               ),
                             ),
                           ],
