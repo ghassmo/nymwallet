@@ -41,12 +41,12 @@ class _TabScreenState extends State<TabScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final transPr = Provider.of<Trans>(context, listen: false);
-    Future.delayed(Duration(seconds: 1)).then((_) {
+    final transPr = Provider.of<Trans>(context);
+    Future.delayed(Duration(milliseconds: 100)).then((_) {
       transPr.loadDataFromStream();
     });
     return Scaffold(
-        body: Center(child: _childerWidgets[_selectedItem]),
+        body: transPr.balance == null ? Center(child: CircularProgressIndicator(),) : Center(child: _childerWidgets[_selectedItem]),
         bottomNavigationBar: BottomNavigationBar(
           selectedItemColor: Theme.of(context).primaryColor,
           unselectedItemColor: Theme.of(context).primaryColor.withOpacity(0.5),

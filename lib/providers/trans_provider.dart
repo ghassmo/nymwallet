@@ -13,13 +13,14 @@ class Trans with ChangeNotifier {
   List<Transaction> listOftrans = [];
   List<String> addedBefore = [];
 
-  loadDataFromStream() {
-    this.dataSt.getHistory().forEach((k, v) {
-      if(!addedBefore.contains(k)){
-        addToList(v);
-      }
+  Future<void> loadDataFromStream() async {
+    await Future.delayed(Duration(seconds: 5), () {
+      this.dataSt.getHistory().forEach((k, v) {
+        if (!addedBefore.contains(k)) {
+          addToList(v);
+        }
+      });
     });
-    
   }
 
   addToList(String data) {
@@ -38,15 +39,14 @@ class Trans with ChangeNotifier {
     });
     this.listOftrans = newList;
     double newBalance = 0;
-    for (var item in listOftrans){
+    for (var item in listOftrans) {
       newBalance += item.value;
     }
     this.balance = newBalance * 10000000;
     notifyListeners();
   }
 
-  getData(){
+  getData() {
     return [...this.listOftrans];
   }
-
 }

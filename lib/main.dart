@@ -1,4 +1,4 @@
-
+import 'dart:convert';
 
 import 'package:bitcoin_flutter/src/payments/p2pkh.dart' show P2PKH;
 import 'package:bitcoin_flutter/src/payments/index.dart' show PaymentData;
@@ -12,13 +12,16 @@ import './providers/trans_provider.dart';
 import './screens/tab_screen.dart';
 import './data_stream.dart';
 
-
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   bool isStreamOn = false;
   final dataStream dataSt =
-      new dataStream(IOWebSocketChannel.connect('ws://85.90.245.20:8765'));
+      new dataStream();
+
+  // new dataStream(IOWebSocketChannel.connect('ws://85.90.245.20:8765'));
+
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +55,6 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
 
 //   final keyPair =
 //       ECPair.fromWIF('cVks5KCc8BBVhWnTJSLjr5odLbNrWK9UY4KprciJJ9dqiDBenhzr');

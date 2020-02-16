@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
+import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 class Part {
@@ -10,11 +11,11 @@ class Part {
 }
 
 class dataStream {
-  final WebSocketChannel websocket;
+  StreamSubscription streamSub;
+  WebSocketChannel websocket;
   Map<String, List<Part>> parts = {};
   int sizeLimit = 500;
 
-  dataStream(this.websocket);
 
   // gen data_id
   Digest computeId(Digest digest) {
@@ -35,6 +36,7 @@ class dataStream {
     return reve(id);
   }
 
+  // spplite string to chunks
   List spliteString(String data, int size) {
     List<String> res = [];
     if (data.length <= size) {
@@ -47,7 +49,7 @@ class dataStream {
     return res;
   }
 
-  Future<void> send(String data) async {
+  Future<void> send(String data, recipient) async {
     List chunks = spliteString(data, sizeLimit);
 
     var dataId = genId(data);
@@ -62,7 +64,14 @@ class dataStream {
         };
         i++;
         var msg = json.encode(message);
-        websocket.sink.add(msg);
+        await request("send",
+            params: {"message": msg, "recipient_address": recipient});
+
+        await request("fetch").then((d){
+          print(d);
+        });
+        // print("parts: " + parts.toString());
+        
       }
     } catch (e) {
       print("error Occured in send: $e ");
@@ -78,27 +87,26 @@ class dataStream {
 
   Future<void> initData() async {
     try {
-      await send(
-          '{"command":"fetch_history", "addrs":["mtovQPnUuCeAUJkhqZn5vJ99vxJYNGXoEn"],"return-recipient":"none"}');
-      websocket.stream.listen(
-        (data) {
-          var dataLoaded = jsonDecode(data);
-          process(dataLoaded);
-          // print(parts);
-        },
-        onError: (e) {
-          print("onError $e");
-        },
-        onDone: () {
-          print("onDone");
-        },
-      );
-      Timer(Duration(seconds: 10), () {
-        return getHistory();
+      var address;
+
+      await request("ownDetails").then((d) {
+        address = d["address"];
       });
-      // print(parts);
+
+      print("address from detail() function " + address);
+      var blockchainReq =
+          '{"command":"fetch_history", "addrs":["mtovQPnUuCeAUJkhqZn5vJ99vxJYNGXoEn"],"return-recipient":"$address"}';
+
+      var nymAddress = "AGdb5ZwZBpazKysh9ijCwgzCVRYcvadEhvaxQ3mkBnur";
+      // print(blockchainReq);
+      await send(blockchainReq, nymAddress);
+
+      Future.delayed(Duration(seconds: 5), () {
+        getHistory();
+      });
+      print(parts);
     } catch (e) {
-      print("Error Occored: $e ");
+      print("Error Occored:  " + e.toString());
     }
   }
 
@@ -114,5 +122,41 @@ class dataStream {
     });
     // print(newMap);
     return newMap;
+  }
+
+  Future<dynamic> request(String messageType, {Map params}) async {
+    try {
+
+      this.websocket = IOWebSocketChannel.connect('ws://127.0.0.1:9001');
+      var dataLoaded;
+
+      Map reqObject = {"type": messageType};
+
+      if (params != null) {
+        reqObject.addAll(params);
+      }
+      print(json.encode(reqObject));
+      
+      this.websocket.sink.add(json.encode(reqObject));
+      streamSub = websocket.stream.listen(
+        (data) {
+          dataLoaded = json.decode(data);
+          // process(dataLoaded);
+          // print(parts);
+        },
+        onError: (e) {
+          print("onError $e");
+        },
+        onDone: () {
+          print("onDone");
+        },
+      );
+
+      await Future.delayed(Duration(seconds: 20));
+      websocket.sink.close();
+      return dataLoaded;
+    } catch (e) {
+      print("error happened in requesrt:" + e.toString());
+    }
   }
 }
