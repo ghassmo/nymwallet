@@ -4,5 +4,7 @@ Bitcoin wallet
 
 ### TODO
 
-    [ ] - Add Chart screen
-    [ ] - Add send screen
+    [ ] - Build home screen
+    [ ] - Build send screen
+    [x] - Build history screen
+    [ ] - Build receive screen

@@ -14,12 +14,11 @@ class Trans with ChangeNotifier {
   List<String> addedBefore = [];
 
   Future<void> loadDataFromStream() async {
-    await Future.delayed(Duration(seconds: 5), () {
-      this.dataSt.getHistory().forEach((k, v) {
-        if (!addedBefore.contains(k)) {
-          addToList(v);
-        }
-      });
+    await this.dataSt.initData();
+    this.dataSt.getHistory().forEach((k, v) {
+      if (!addedBefore.contains(k)) {
+        addToList(v);
+      }
     });
   }
 

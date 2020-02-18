@@ -19,6 +19,7 @@ class TabScreen extends StatefulWidget {
 class _TabScreenState extends State<TabScreen> {
   int _selectedItem = 0;
   bool isLoading = false;
+  bool isStreamOn = false;
 
   void _selectItem(int i) {
     setState(() {
@@ -42,11 +43,18 @@ class _TabScreenState extends State<TabScreen> {
   @override
   Widget build(BuildContext context) {
     final transPr = Provider.of<Trans>(context);
-    Future.delayed(Duration(milliseconds: 100)).then((_) {
-      transPr.loadDataFromStream();
-    });
+    if (!isStreamOn) {
+      Future.delayed(Duration(milliseconds: 100)).then((_) {
+        transPr.loadDataFromStream();
+      });
+      this.isStreamOn = true; 
+    }
     return Scaffold(
-        body: transPr.balance == null ? Center(child: CircularProgressIndicator(),) : Center(child: _childerWidgets[_selectedItem]),
+        body: transPr.balance == null
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : Center(child: _childerWidgets[_selectedItem]),
         bottomNavigationBar: BottomNavigationBar(
           selectedItemColor: Theme.of(context).primaryColor,
           unselectedItemColor: Theme.of(context).primaryColor.withOpacity(0.5),

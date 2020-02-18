@@ -1,12 +1,11 @@
-import 'dart:convert';
 
-import 'package:bitcoin_flutter/src/payments/p2pkh.dart' show P2PKH;
-import 'package:bitcoin_flutter/src/payments/index.dart' show PaymentData;
-import 'package:crypto/crypto.dart';
+// import 'package:bitcoin_flutter/src/payments/p2pkh.dart' show P2PKH;
+// import 'package:bitcoin_flutter/src/payments/index.dart' show PaymentData;
+// import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:web_socket_channel/io.dart';
+// import 'package:web_socket_channel/io.dart';
 
 import './providers/trans_provider.dart';
 import './screens/tab_screen.dart';
@@ -15,7 +14,6 @@ import './data_stream.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  bool isStreamOn = false;
   final dataStream dataSt =
       new dataStream();
 
@@ -28,11 +26,6 @@ class MyApp extends StatelessWidget {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
-
-    if (!isStreamOn) {
-      this.dataSt.initData();
-      isStreamOn = true;
-    }
 
     return MultiProvider(
       providers: [

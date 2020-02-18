@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'package:crypto/crypto.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
@@ -15,7 +16,6 @@ class dataStream {
   WebSocketChannel websocket;
   Map<String, List<Part>> parts = {};
   int sizeLimit = 500;
-
 
   // gen data_id
   Digest computeId(Digest digest) {
@@ -67,11 +67,14 @@ class dataStream {
         await request("send",
             params: {"message": msg, "recipient_address": recipient});
 
-        await request("fetch").then((d){
-          print(d);
+        await request("fetch").then((d) {
+          List<dynamic> dataToProcess = d["messages"];
+          dataToProcess.forEach((d){
+            process(json.decode(d));
+          });
         });
         // print("parts: " + parts.toString());
-        
+
       }
     } catch (e) {
       print("error Occured in send: $e ");
@@ -93,7 +96,6 @@ class dataStream {
         address = d["address"];
       });
 
-      print("address from detail() function " + address);
       var blockchainReq =
           '{"command":"fetch_history", "addrs":["mtovQPnUuCeAUJkhqZn5vJ99vxJYNGXoEn"],"return-recipient":"$address"}';
 
@@ -101,10 +103,6 @@ class dataStream {
       // print(blockchainReq);
       await send(blockchainReq, nymAddress);
 
-      Future.delayed(Duration(seconds: 5), () {
-        getHistory();
-      });
-      print(parts);
     } catch (e) {
       print("Error Occored:  " + e.toString());
     }
@@ -126,7 +124,6 @@ class dataStream {
 
   Future<dynamic> request(String messageType, {Map params}) async {
     try {
-
       this.websocket = IOWebSocketChannel.connect('ws://127.0.0.1:9001');
       var dataLoaded;
 
@@ -136,12 +133,11 @@ class dataStream {
         reqObject.addAll(params);
       }
       print(json.encode(reqObject));
-      
+
       this.websocket.sink.add(json.encode(reqObject));
       streamSub = websocket.stream.listen(
         (data) {
           dataLoaded = json.decode(data);
-          // process(dataLoaded);
           // print(parts);
         },
         onError: (e) {
@@ -152,7 +148,7 @@ class dataStream {
         },
       );
 
-      await Future.delayed(Duration(seconds: 20));
+      await Future.delayed(Duration(seconds: 6));
       websocket.sink.close();
       return dataLoaded;
     } catch (e) {
