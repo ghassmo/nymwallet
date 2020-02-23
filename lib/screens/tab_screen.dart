@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
@@ -11,7 +13,6 @@ import './home_screen.dart';
 
 class TabScreen extends StatefulWidget {
   get dataSt => null;
-
   @override
   _TabScreenState createState() => _TabScreenState();
 }
@@ -43,17 +44,17 @@ class _TabScreenState extends State<TabScreen> {
   @override
   Widget build(BuildContext context) {
     final transPr = Provider.of<Trans>(context);
-    if (!isStreamOn) {
-      Future.delayed(Duration(milliseconds: 100)).then((_) {
-        transPr.loadDataFromStream();
-      });
-      this.isStreamOn = true; 
-    }
+    
+
+    Future.delayed(Duration(milliseconds: 100)).then((_) {
+      transPr.loadDataFromStream();
+    });
+
     return Scaffold(
-        body: transPr.balance == null
+        body: transPr.getBalance() == null
             ? Center(
-                child: CircularProgressIndicator(),
-              )
+                    child: CircularProgressIndicator(),
+                  )
             : Center(child: _childerWidgets[_selectedItem]),
         bottomNavigationBar: BottomNavigationBar(
           selectedItemColor: Theme.of(context).primaryColor,

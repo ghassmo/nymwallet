@@ -46,7 +46,7 @@ class AppBarCustom extends StatelessWidget {
                 ),
                 onPressed: () {},
                 label: Text(
-                  iconString ? trans.balance.toString() + " mBtc" : " ",
+                  iconString ? trans.getBalance().toString() + " mBtc" : " ",
                   style: TextStyle(color: Theme.of(context).scaffoldBackgroundColor),
                 ),
               )

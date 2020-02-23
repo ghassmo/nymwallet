@@ -16,12 +16,10 @@ dependencies:
   cupertino_icons: ^0.1.0
   outline_material_icons: ^0.1.1
   provider: ^4.0.3
-  camera: ^0.5.5
+  qr_flutter: ^3.2.0
   web_socket_channel: ^1.1.0
   bitcoin_flutter: ^1.1.0
   flutter_secure_storage: ^3.3.1+1
-  barcode_scan: ^1.0.0
-  qr: ^1.2.0
 
 dev_dependencies:
   flutter_test:

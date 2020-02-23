@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class Transaction with ChangeNotifier {
+class TransClass with ChangeNotifier {
   String type;
   String txHash;
   int blockHeigh;
@@ -8,7 +8,7 @@ class Transaction with ChangeNotifier {
   int value;
 
 
-  Transaction({
+  TransClass({
     @required this.type,
     @required this.txHash,
     @required this.blockHeigh,
