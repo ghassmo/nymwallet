@@ -4,7 +4,8 @@ Bitcoin wallet
 
 This project use the port of nym mixnet client to mobile from https://github.com/mileschet/nym-mobile-client
 
-
+![screenshot ](./screenshot.png)
+![screenshot ](./screenshot2.png)
 ### TODO
 
     [X] - Build home screen
