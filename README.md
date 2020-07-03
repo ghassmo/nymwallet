@@ -1,8 +1,8 @@
 # walletnym
 
-Bitcoin wallet
+Bitcoin wallet with Nym https://nymtech.net/
 
-This project use the port of nym mixnet client to mobile from https://github.com/mileschet/nym-mobile-client
+This project use the port of nym mixnet client to mobile from https://github.com/mileschet/nym-mobile
 
 <img src="screenshot2.png" height="350px" />
 
